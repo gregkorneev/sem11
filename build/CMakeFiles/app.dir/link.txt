@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/app.dir/src/main.cpp.o CMakeFiles/app.dir/src/matrix_utils.cpp.o CMakeFiles/app.dir/src/strassen.cpp.o -o app 
