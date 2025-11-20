@@ -8,7 +8,7 @@
 #include "matrix_utils.h"
 #include "strassen.h"
 
-// Заполнить матрицу случайными числами
+// Заполнение матрицы случайными числами 0..9
 void fillRandom(Matrix &m) {
     int n = (int)m.size();
     for (int i = 0; i < n; ++i) {
@@ -18,12 +18,20 @@ void fillRandom(Matrix &m) {
     }
 }
 
-template <typename Func>
-double measureTime(Func f, const Matrix &A, const Matrix &B) {
+// Замер времени стандартного алгоритма
+double measureStandard(const Matrix &A, const Matrix &B) {
     auto start = std::chrono::high_resolution_clock::now();
-    Matrix C = f(A, B);
+    Matrix C = multiplyStandard(A, B);
     auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> ms = end - start;
+    return ms.count();
+}
 
+// Замер времени алгоритма Штрассена (без печати M1..M7)
+double measureStrassen(const Matrix &A, const Matrix &B) {
+    auto start = std::chrono::high_resolution_clock::now();
+    Matrix C = strassenRec(A, B);
+    auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> ms = end - start;
     return ms.count();
 }
@@ -31,14 +39,16 @@ double measureTime(Func f, const Matrix &A, const Matrix &B) {
 int main() {
     std::srand((unsigned int)std::time(nullptr));
 
+    // Размеры матриц, для которых будем мерить время
     std::vector<int> sizes = {2, 4, 8, 16, 32};
 
     std::ofstream fout("timings.csv");
     if (!fout.is_open()) {
-        std::cout << "Не удалось открыть timings.csv" << std::endl;
+        std::cout << "Не удалось открыть файл timings.csv для записи." << std::endl;
         return 1;
     }
 
+    // Заголовок CSV
     fout << "n,standard_ms,strassen_ms\n";
 
     std::cout << "Запуск бенчмарка..." << std::endl;
@@ -52,8 +62,8 @@ int main() {
         fillRandom(A);
         fillRandom(B);
 
-        double t_std = measureTime(multiplyStandard, A, B);
-        double t_strassen = measureTime(strassenRec, A, B);
+        double t_std = measureStandard(A, B);
+        double t_strassen = measureStrassen(A, B);
 
         fout << n << "," << t_std << "," << t_strassen << "\n";
 

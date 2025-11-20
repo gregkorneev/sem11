@@ -1,15 +1,16 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+
 #include "matrix_utils.h"
 #include "strassen.h"
 
-// Заполнение матрицы случайными целыми числами от 0 до 9
+// Заполнение матрицы случайными числами 0..9
 void fillRandom(Matrix &m) {
     int n = (int)m.size();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            m[i][j] = std::rand() % 10;  // числа 0..9
+            m[i][j] = std::rand() % 10;
         }
     }
 }
@@ -26,13 +27,13 @@ int main() {
         return 1;
     }
 
-    // Инициализация ГПСЧ один раз
+    // Инициализируем генератор случайных чисел
     std::srand((unsigned int)std::time(nullptr));
 
     Matrix A = createMatrix(n);
     Matrix B = createMatrix(n);
 
-    // ---- ТЕПЕРЬ МАТРИЦЫ ГЕНЕРИРУЮТСЯ, А НЕ ВВОДЯТСЯ РУКАМИ ----
+    // Генерируем случайные матрицы A и B
     fillRandom(A);
     fillRandom(B);
 
@@ -43,7 +44,7 @@ int main() {
     Matrix C_standard = multiplyStandard(A, B);
     printMatrix(C_standard, "C (стандартное умножение)");
 
-    // 2. Алгоритм Штрассена
+    // 2. Алгоритм Штрассена (с выводом M1..M7 и блоков C11..C22)
     std::cout << "=== Алгоритм Штрассена ===" << std::endl;
     Matrix C_strassen = strassenWithPrint(A, B);
     printMatrix(C_strassen, "C (алгоритм Штрассена)");
