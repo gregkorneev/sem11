@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-// Простой тип для матрицы: двумерный вектор чисел с плавающей запятой
 typedef std::vector<std::vector<double> > Matrix;
 
 // Создание квадратной матрицы n x n, заполненной нулями
@@ -16,10 +15,8 @@ void inputMatrix(Matrix &m, const std::string &name);
 // Вывод матрицы на экран
 void printMatrix(const Matrix &m, const std::string &name);
 
-// Сложение матриц одинакового размера
+// Сложение и вычитание матриц одинакового размера
 Matrix addMatrix(const Matrix &A, const Matrix &B);
-
-// Вычитание матриц одинакового размера
 Matrix subMatrix(const Matrix &A, const Matrix &B);
 
 // Разбиение квадратной матрицы A на 4 блока одинакового размера

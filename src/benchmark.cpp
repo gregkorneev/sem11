@@ -8,18 +8,16 @@
 #include "matrix_utils.h"
 #include "strassen.h"
 
-// Заполнение матрицы случайными числами
+// Заполнить матрицу случайными числами
 void fillRandom(Matrix &m) {
     int n = (int)m.size();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            // простые небольшие значения, чтобы числа не росли слишком сильно
             m[i][j] = std::rand() % 10;
         }
     }
 }
 
-// Замер времени выполнения переданной функции умножения
 template <typename Func>
 double measureTime(Func f, const Matrix &A, const Matrix &B) {
     auto start = std::chrono::high_resolution_clock::now();
@@ -27,22 +25,20 @@ double measureTime(Func f, const Matrix &A, const Matrix &B) {
     auto end = std::chrono::high_resolution_clock::now();
 
     std::chrono::duration<double, std::milli> ms = end - start;
-    return ms.count(); // миллисекунды
+    return ms.count();
 }
 
 int main() {
     std::srand((unsigned int)std::time(nullptr));
 
-    // Размеры матриц, для которых будем мерить время (степени двойки)
     std::vector<int> sizes = {2, 4, 8, 16, 32};
 
     std::ofstream fout("timings.csv");
     if (!fout.is_open()) {
-        std::cout << "Не удалось открыть файл timings.csv для записи." << std::endl;
+        std::cout << "Не удалось открыть timings.csv" << std::endl;
         return 1;
     }
 
-    // Заголовок CSV
     fout << "n,standard_ms,strassen_ms\n";
 
     std::cout << "Запуск бенчмарка..." << std::endl;
@@ -56,17 +52,13 @@ int main() {
         fillRandom(A);
         fillRandom(B);
 
-        // Замер стандартного умножения
         double t_std = measureTime(multiplyStandard, A, B);
-
-        // Замер Штрассена
         double t_strassen = measureTime(strassenRec, A, B);
 
-        // Запись в CSV
         fout << n << "," << t_std << "," << t_strassen << "\n";
 
-        std::cout << "  standard:  " << t_std << " ms\n";
-        std::cout << "  strassen:  " << t_strassen << " ms\n";
+        std::cout << "  standard: " << t_std << " ms\n";
+        std::cout << "  strassen: " << t_strassen << " ms\n";
     }
 
     fout.close();
