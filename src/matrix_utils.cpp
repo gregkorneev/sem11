@@ -1,5 +1,4 @@
 #include "matrix_utils.h"
-
 #include <iostream>
 #include <iomanip>
 
