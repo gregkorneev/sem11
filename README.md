@@ -6,4 +6,4 @@ cmake --build build && \
 ./build/app && \
 cd build && \
 ./benchmark && \
-python3 ../plot_timings.py
+python3 ../plot_timings.py && cd ..
