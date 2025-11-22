@@ -1,9 +1,1 @@
-find . -name "*.csv" -type f -delete && \
-find . -name "*.png" -type f -delete && \
-rm -rf build && \
-cmake -B build && \
-cmake --build build && \
-./build/app && \
-cd build && \
-./benchmark && \
-python3 ../plot_timings.py && cd ..
+rm -rf data && rm -rf build && cmake -B build && cmake --build build && ./build/benchmark && python3 benchmark_numpy.py && python3 plot_timings.py
